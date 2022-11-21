@@ -249,10 +249,12 @@ kurs.AddOrder(1115,1,(TO_DATE('2022/11/01','yyyy/mm/dd')),23);
 commit;
 end;
 
-
-select * from orders;
-
+--select * from orders;
 
 
 
+begin
+kurs.DeleteOrder(1);
+commit;
+end;
 
