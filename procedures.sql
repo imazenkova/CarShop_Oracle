@@ -432,6 +432,15 @@ end;
 /
 
 
+
+
+--declare curs sys_refcursor;
+--begin
+--kurs. GetCarsSearch('Ford',curs);
+--end;
+
+
+
 --- изменять наличие 
 create or replace procedure SetCarSaleAvailability(p_car_id cars.id%type, p_sale_availability cars.sale_availability%type)
 is
@@ -450,7 +459,7 @@ end;
 
 
 
-----------------??(not done
+
 create or replace trigger OrderCar
 after insert on orders
 for each row
@@ -458,6 +467,6 @@ begin
     SetCarSaleAvailability(:new.car_id, 0);
 end;
 /
---)
+
 
 --SELECT * FROM USER_PROCEDURES;
