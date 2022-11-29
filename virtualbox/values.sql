@@ -205,26 +205,12 @@ end;
 
 
 begin
-kurs.AddWorker(1115, 'Vitaliy', 'Pomazanskiy', 'Vladimirovich', '+375296837410', 'Password15');
+kurs.AddAdmin(1, 'admin', 'admin', 'adminovich', '+375296837410', 'admin');
 commit;
 end;
 /
-begin
-kurs.AddWorker(1117, 'Alexander', 'Protas', 'Ivanovich', '+375293947562', 'Password17');
-commit;
-end;
-/
-begin
-kurs.AddWorker(1118,'Denis', 'Slushenko', 'Sergevich', '+375291805824', 'Password18');
-commit;
-end;
-/
-begin
-kurs.AddWorker(1119,'Ivan', 'Korilov', 'Olegovich', '+375296942848', 'Password19');
-commit;
-end;
-/
---select * from workers;
+
+--select * from admin;
 
 declare a int;
 begin
@@ -243,9 +229,9 @@ end;
 
 --select*from accounts;
 
-
+-----noy done
 begin
-kurs.AddOrder(1,(TO_DATE('2022/11/01','yyyy/mm/dd')),23);
+kurs.AddOrder(1,5);
 commit;
 end;
 

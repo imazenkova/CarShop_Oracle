@@ -1,10 +1,10 @@
 ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
 
 ----
-DROP USER imazenkova;
+DROP USER kurs;
 
 ---------------------- schema (tables' owner)
-CREATE USER kurs
+CREATE USER KURS
 IDENTIFIED BY 1111 
 DEFAULT TABLESPACE Users 
 QUOTA UNLIMITED ON Users;
@@ -21,12 +21,17 @@ GRANT CREATE SESSION TO kurs;
 GRANT CREATE ROLE TO kurs;
 GRANT CREATE JOB TO kurs;
 GRANT CREATE ANY DIRECTORY TO kurs;
-GRANT READ,WRITE ON DIRECTORY DIR TO kurs;
+
 grant execute on UTL_FILE to kurs;
+
+GRANT READ, WRITE, EXECUTE ON DIR TO KURS;
 
 GRANT EXECUTE ON sys.dbms_crypto TO kurs;
 
 COMMIT;
+
+select * from USER_SYS_PRIVS;
+select * from session_privs;
 
 
 
@@ -64,7 +69,7 @@ CREATE TABLE Cars (
     
     CREATE TABLE Supplier (
 	Id INT DEFAULT SUPPLIER_ID_SEQ.NEXTVAL NOT NULL,
-	ñompany_name NVARCHAR2(200) NOT NULL,
+	company_name NVARCHAR2(200) NOT NULL,
 	adress NVARCHAR2(200) NOT NULL,
 	phone_number NVARCHAR2(50) NOT NULL,
 	constraint SUPPLIER_PK PRIMARY KEY (Id));
@@ -83,14 +88,13 @@ CREATE TABLE Cars (
     
     
     
-    CREATE sequence ORDERS_ORDERS_NUMBER_SEQ;
+    CREATE sequence ORDERS_ORDERS_ID_SEQ;
     
     CREATE TABLE Orders (
-	order_number INT DEFAULT ORDERS_ORDERS_NUMBER_SEQ.NEXTVAL NOT NULL,
+	id INT DEFAULT ORDERS_ORDERS_ID_SEQ.NEXTVAL NOT NULL,
 	client_id INT NOT NULL,
-	ordering_date DATE NOT NULL,
 	car_id INT UNIQUE NOT NULL,
-	constraint ORDER_PK PRIMARY KEY (order_number));
+	constraint ORDER_PK PRIMARY KEY (ID));
     
     
     
@@ -109,13 +113,13 @@ CREATE TABLE Cars (
     
     CREATE TABLE Admin (
     
-	admin_id INT NOT NULL,
+	id INT NOT NULL,
 	name NVARCHAR2(50) NOT NULL,
 	surname NVARCHAR2(50) NOT NULL,
 	patronymic NVARCHAR2(50) NOT NULL,
 	phone_number NVARCHAR2(50) UNIQUE NOT NULL,
     password_value NVARCHAR2(50) NOT NULL,
-	constraint WORKER_PK PRIMARY KEY (personnel_number));
+	constraint ADMIN_PK PRIMARY KEY (ID));
     
    
     CREATE TABLE Accounts (
@@ -131,7 +135,6 @@ ALTER TABLE Cars ADD CONSTRAINT Cars_fk3 FOREIGN KEY (equipment_id) REFERENCES E
 
 
 
-ALTER TABLE Orders ADD CONSTRAINT Orders_fk1 FOREIGN KEY (worker_id) REFERENCES Workers(personnel_number);
 ALTER TABLE Orders ADD CONSTRAINT Orders_fk2 FOREIGN KEY (client_id) REFERENCES Clients(id);
 ALTER TABLE Orders ADD CONSTRAINT Orders_fk3 FOREIGN KEY (car_id) REFERENCES Cars(Id);
 
@@ -143,7 +146,7 @@ DROP TABLE Accounts;
 drop sequence ORDERS_ORDERS_NUMBER_SEQ;
 drop TABLE Clients;
 drop sequence CLIENTS_ID_SEQ;
-drop TABLE Workers;
+drop TABLE ADMIN;
 
 drop table Cars;
 drop sequence CARS_ID_SEQ;

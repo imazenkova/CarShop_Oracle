@@ -1,9 +1,5 @@
- 
- -----------
- --сделать отмену заказа
- 
- ----------------
- 
+ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+
 create or replace procedure AddCar(p_supplier_id cars.supplier_id%type, p_model_id cars.model_id%type, p_equipment_id cars.equipment_id%type, p_brand cars.brand%type, p_color cars.color%type, p_cost cars.cost%type, p_sale_availability cars.sale_availability%type)
 is
 begin
@@ -16,11 +12,6 @@ end;
 
 /
 
-
-
-
-
-
 create or replace procedure DeleteCar(p_id cars.id%type)
 is
 begin
@@ -31,8 +22,6 @@ begin
 end;
 /
 
-
-
 create or replace procedure UpdateCar(p_id cars.id%type, p_supplier_id cars.supplier_id%type, p_model_id cars.model_id%type, p_equipment_id cars.equipment_id%type, p_brand cars.brand%type, p_color cars.color%type, p_cost cars.cost%type, p_sale_availability cars.sale_availability%type)
 is
 begin
@@ -41,9 +30,7 @@ begin
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
-
 /
-
 
 create or replace procedure AddEquipment(p_transmission equipment.transmission%type, p_salon equipment.salon%type, p_stereo_system equipment.stereo_system%type)
 is
@@ -56,7 +43,6 @@ begin
 end;
 /
 
-
 create or replace procedure DeleteEquipment(p_id equipment.id%type)
 is
 begin
@@ -65,9 +51,7 @@ begin
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
-
 /
-
 
 create or replace procedure UpdateEquipment(p_id equipment.id%type, p_transmission equipment.transmission%type, p_salon equipment.salon%type, p_stereo_system equipment.stereo_system%type)
 is
@@ -77,17 +61,13 @@ begin
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
-
-
 /
 
-
-
-create or replace procedure AddSupplier(p_сompany_name supplier.сompany_name%type, p_adress supplier.adress%type, p_phone_number supplier.phone_number%type)
+create or replace procedure AddSupplier(p_company_name supplier.company_name%type, p_adress supplier.adress%type, p_phone_number supplier.phone_number%type)
 is
 begin
-    insert into supplier(сompany_name, adress, phone_number) 
-    VALUES(p_сompany_name, p_adress, p_phone_number);
+    insert into supplier(company_name, adress, phone_number) 
+    VALUES(p_company_name, p_adress, p_phone_number);
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
@@ -105,10 +85,10 @@ begin
 end;
 /
 
-create or replace procedure UpdateSupplier(p_id supplier.id%type, p_сompany_name supplier.сompany_name%type, p_adress supplier.adress%type, p_phone_number supplier.phone_number%type)
+create or replace procedure UpdateSupplier(p_id supplier.id%type, p_company_name supplier.company_name%type, p_adress supplier.adress%type, p_phone_number supplier.phone_number%type)
 is
 begin
-    update supplier set id = p_id, сompany_name = p_сompany_name, adress = p_adress, phone_number = p_phone_number where supplier.id = p_id;
+    update supplier set id = p_id, company_name = p_company_name, adress = p_adress, phone_number = p_phone_number where supplier.id = p_id;
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
@@ -146,39 +126,37 @@ begin
 end;
 / 
 
-///////////////////////////////////////////////?????????????????????????????????????????????????????????????
-create or replace procedure AddOrder( p_client_id orders.client_id%type, p_ordering_date orders.ordering_date%type,p_car_id orders.car_id%type)
+--//////////////////////////////////////////// must do new version
+create or replace procedure AddOrder( p_client_id orders.client_id%type,p_car_id orders.car_id%type)
 is
 begin
-    insert into orders(client_id, ordering_date, car_id) 
-    VALUES(p_client_id,  p_ordering_date, p_car_id);
+    insert into orders(client_id, car_id) 
+    VALUES(p_client_id,p_car_id);
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
 /   
 
- create or replace procedure DeleteOrder(p_id orders.order_number%type)
+ create or replace procedure DeleteOrder(p_id orders.id%type)
 is
 begin
-    delete from orders where orders.order_number = p_id;
+    delete from orders where orders.id = p_id;
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;  
  /  
  
- create or replace procedure UpdateOrder(p_id orders.order_number%type, p_client_id orders.client_id%type, p_ordering_date orders.ordering_date%type)
+ create or replace procedure UpdateOrder(p_id orders.id%type, p_client_id orders.client_id%type, p_car_id orders.car_id%type)
 is
 begin
-    update orders set order_number = p_id,client_id = p_client_id, ordering_date = p_ordering_date where orders.order_number = p_id;
+    update orders set id = p_id,client_id = p_client_id, car_id = p_car_id where orders.id  = p_id;
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
 /
-
-
 
 create or replace procedure AddClient(p_name clients.name%type, p_surname clients.surname%type, p_patronymic clients.patronymic%type,p_adress clients.adress%type,p_age clients.age%type,p_phone_number clients.phone_number%type, new_id out clients.id%type)
  
@@ -199,7 +177,6 @@ begin
 end;
 /
 
-
  create or replace procedure DeleteClient(p_id clients.id%type)
 is
 begin
@@ -209,6 +186,7 @@ begin
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;  
 /
+
  create or replace procedure UpdateClient(p_id clients.id%type, p_name clients.name%type, p_surname clients.surname%type, p_age clients.age%type, p_phone_number clients.phone_number%type)
 is
 begin
@@ -219,39 +197,36 @@ begin
 end;
 /
 
-
-
-create or replace procedure AddWorker(p_personnel_number workers.personnel_number%type, p_name workers.name%type,p_surname workers.surname%type,p_patronymic workers.patronymic%type,p_phone_number workers.phone_number%type, p_password_value workers.password_value%type)
+create or replace procedure AddAdmin(p_id admin.id%type, p_name admin.name%type,p_surname admin.surname%type,p_patronymic admin.patronymic%type,p_phone_number admin.phone_number%type, p_password_value admin.password_value%type)
 is
 begin
-    insert into workers(personnel_number,name, surname, patronymic, phone_number, password_value) 
-    VALUES(p_personnel_number,  p_name, p_surname, p_patronymic, p_phone_number, p_password_value);
+    insert into admin(id,name, surname, patronymic, phone_number, password_value) 
+    VALUES(p_id,  p_name, p_surname, p_patronymic, p_phone_number, p_password_value);
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
 /
 
- create or replace procedure DeleteWorker(p_id workers.personnel_number%type)
+ create or replace procedure Deleteadmin(p_id admin.id%type)
 is
 begin
-    delete from workers where workers.personnel_number = p_id;
+    delete from admin where admin.id = p_id;
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;  
 /
 
- create or replace procedure UpdateWorker(p_personnel_number workers.personnel_number%type, p_name workers.name%type,p_surname workers.surname%type,p_patronymic workers.patronymic%type,p_phone_number workers.phone_number%type, p_password_value workers.password_value%type)
+ create or replace procedure UpdateAdmin(p_id admin.id%type, p_name admin.name%type,p_surname admin.surname%type,p_patronymic admin.patronymic%type,p_phone_number admin.phone_number%type, p_password_value admin.password_value%type)
 is
 begin
-    update workers set personnel_number = p_personnel_number, name = p_name, surname = p_surname, patronymic= p_patronymic, phone_number= p_phone_number, password_value=  p_password_value where workers.personnel_number = p_personnel_number;
+    update admin set id = p_id, name = p_name, surname = p_surname, patronymic= p_patronymic, phone_number= p_phone_number, password_value=  p_password_value where admin.id = p_id;
     exception
     when others 
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
 /
-
 
 -----------------------------------????????????????
 --superkey12345678 - ключ шифрования (также RAW). Длина ключа должна соответствовать вы­бранному алгоритму. Например, для алгоритма DES она должна быть не менее 64 биn
@@ -270,7 +245,6 @@ begin
 end;
 /
 
-
 create or replace procedure DeleteAccount(p_client_id Accounts.client_id%type)
 is
 begin
@@ -280,7 +254,6 @@ begin
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
 /
-
 
 create or replace procedure UpdateAccount(p_client_id Accounts.client_id%type, p_login Accounts.login%type, p_password_value Accounts.password_value%type)
 is
@@ -293,11 +266,6 @@ end;
 /
 
 select * from clients;
-
-
-
-
-
 
 -----------------------------------------FUNCTIONS
 
@@ -318,7 +286,6 @@ IS
                               );
        return RAWTOHEX (l_enc);
 END;
-
 /
 
 create or replace FUNCTION decode_val (p_in_val IN VARCHAR2, p_key IN VARCHAR2)
@@ -341,7 +308,6 @@ IS
 
 ---)
 
-
 -- SYS_REFCURSOR нестрогой ссылки на курсор.
 --Ссылка на курсор дает возможность не заводить структуры курсора (CURSOR … IS …) в клиентской программе, а ограничиться в ней выделением памяти только для адреса курсора,
 
@@ -357,31 +323,6 @@ open cur for select * from Accounts where login = p_login and password_value = p
 end;
 /
 
-
-
-
-select * from workers;
-create or replace procedure GetCurrentWorker(p_personnel_number Workers.personnel_number%type, p_password_value Workers.password_value%type, cur out sys_refcursor)
-is
-begin
-open cur for select * from Workers where personnel_number = p_personnel_number and password_value = p_password_value ; 
-
-    exception
-    when others 
-    then DBMS_OUTPUT.put_line(sqlerrm);
-end;
-/
-COMMIT;
-
---declare curs sys_refcursor;
---begin
---kurs.GetCurrentWorker(1115,'PASSWORD15',curs);
---end;
---/
-
-
-
-
 create or replace procedure GetCars(cur out sys_refcursor)
 is
 begin
@@ -393,8 +334,13 @@ dbms_sql.return_result(cur);
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
 /
+--
+--declare curs sys_refcursor;
+--begin
+--SYSADMIN.GetClients;
+--end;
 
-------------------ND
+
 create or replace procedure GetClients(cur out sys_refcursor)
 is
 begin
@@ -409,9 +355,8 @@ end;
 
 --declare curs sys_refcursor;
 --begin
---kurs.GetCars(curs);
+--kurs.GetClients(curs);
 --end;
-
 
 create or replace procedure GetCarsSearch( super_param cars.brand%type,cur out sys_refcursor)
 is
@@ -431,17 +376,12 @@ dbms_sql.return_result(cur);
 end;
 /
 
-
-
-
 --declare curs sys_refcursor;
 --begin
---kurs. GetCarsSearch('Ford',curs);
+--kurs. GetCarsSearch(30000,curs);
 --end;
 
-
-
---- изменять наличие 
+--- изменять наличие  for admins
 create or replace procedure SetCarSaleAvailability(p_car_id cars.id%type, p_sale_availability cars.sale_availability%type)
 is
 begin
@@ -451,7 +391,6 @@ begin
     then DBMS_OUTPUT.put_line(sqlerrm);
 end;
 /
-
 
 --begin
 --kurs.SetCarSaleAvailability(23,1);
